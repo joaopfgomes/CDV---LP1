@@ -12,3 +12,5 @@ Como considerações finais, tive dificuldades na implementação de alguns meto
 os arquivos txt ficam gravados na pasta "bin após compilação"
 
 para compilar, use "make"
+
+https://youtu.be/inXZ6v9zZTI (2 Checkpoint)
