@@ -15,8 +15,12 @@ int main() {
         std::cout << "2. Cadastrar Trajeto\n";
         std::cout << "3. Cadastrar Transporte\n";
         std::cout << "4. Cadastrar Passageiro\n";
-        std::cout << "5. Relatar Estado\n";
-        std::cout << "6. Sair\n";
+        std::cout << "5. Relatar localização das pessoas\n";
+        std::cout << "6. Relatar localização dos transportes\n";
+        std::cout << "7. Relatar viagens em andamento\n";
+        std::cout << "8. Relatar cidades mais visitadas\n";
+        std::cout << "9. Relatar Estado\n";
+        std::cout << "10. Sair\n";
         std::cin >> opcao;
 
         std::cin.ignore(); // Limpar o buffer de entrada
@@ -70,14 +74,26 @@ int main() {
             std::getline(std::cin, localAtual);
             controlador.cadastrarPassageiro(nome, localAtual);
         }
-        else if (opcao == 5) {
+        else if (opcao == 9) {
             controlador.relatarEstado();
+        }
+        else if (opcao == 5) {
+            controlador.relatarLocalizacaoPessoas();
+        }
+        else if (opcao == 6) {
+            controlador.relatarLocalizacaoTransportes();
+        }
+        else if (opcao == 7) {
+            controlador.relatarViagensEmAndamento();
+        }
+        else if (opcao == 8) {
+            controlador.relatarCidadesMaisVisitadas();
         }
 
         // Salvar dados sempre que houver alterações
         controlador.salvarDados();
 
-    } while (opcao != 6);
+    } while (opcao != 10);
 
     return 0;
 }

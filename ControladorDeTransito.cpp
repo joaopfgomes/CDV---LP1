@@ -1,5 +1,6 @@
 #include "ControladorDeTransito.h"
 #include <iostream>
+#include <algorithm>
 
 void ControladorDeTransito::cadastrarCidade(std::string nome) {
     Cidade* cidade = new Cidade(nome);
@@ -71,6 +72,75 @@ void ControladorDeTransito::relatarEstado() const {
     for (const auto& passageiro : passageiros) {
         std::cout << passageiro->getNome() << " (Local Atual: " << passageiro->getLocalAtual()->getNome() << ")\n";
     }
+}
+
+void ControladorDeTransito::relatarLocalizacaoPessoas() const {
+    for (const auto& passageiro : passageiros) {
+        std::cout << "Passageiro: " << passageiro->getNome();
+        bool encontrouViagem = false;
+        
+        for (const auto& viagem : viagensAtivas) {
+            if (std::find(viagem->getPassageiros().begin(), 
+                         viagem->getPassageiros().end(), 
+                         passageiro) != viagem->getPassageiros().end()) {
+                std::cout << " - Em trânsito de " 
+                         << viagem->getOrigem()->getNome() 
+                         << " para " << viagem->getDestino()->getNome()
+                         << " no transporte " << viagem->getTransporte()->getNome()
+                         << std::endl;
+                encontrouViagem = true;
+                break;
+            }
+        }
+        
+        if (!encontrouViagem) {
+            std::cout << " - Em " << passageiro->getLocalAtual()->getNome() << std::endl;
+        }
+    }
+}
+
+void ControladorDeTransito::relatarLocalizacaoTransportes() const {
+    for (const auto& transporte : transportes) {
+        std::cout << "Transporte: " << transporte->getNome();
+        bool encontrouViagem = false;
+        
+        for (const auto& viagem : viagensAtivas) {
+            if (viagem->getTransporte() == transporte) {
+                std::cout << " - Em trânsito de " 
+                         << viagem->getOrigem()->getNome() 
+                         << " para " << viagem->getDestino()->getNome() 
+                         << std::endl;
+                encontrouViagem = true;
+                break;
+            }
+        }
+        
+        if (!encontrouViagem) {
+            std::cout << " - Em " << transporte->getLocalAtual()->getNome() << std::endl;
+        }
+    }
+}
+
+void ControladorDeTransito::relatarViagensEmAndamento() const {
+    std::cout << "\nViagens em andamento:" << std::endl;
+    for (const auto& viagem : viagensAtivas) {
+        std::cout << "De " << viagem->getOrigem()->getNome() 
+                 << " para " << viagem->getDestino()->getNome()
+                 << " - Transporte: " << viagem->getTransporte()->getNome()
+                 << " - Passageiros: ";
+        for (const auto& passageiro : viagem->getPassageiros()) {
+            std::cout << passageiro->getNome() << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+void ControladorDeTransito::registrarVisita(Cidade* cidade) {
+    visitasPorCidade[cidade]++;
+}
+
+void ControladorDeTransito::relatarCidadesMaisVisitadas() const {
+    
 }
 
 void ControladorDeTransito::salvarDados() {
